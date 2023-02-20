@@ -23,7 +23,7 @@ func NewDiscordSession(token string) (*discordgo.Session, error) {
 		return nil, fmt.Errorf("error opening discord connection: %v", err)
 	}
 
-	s.UpdateGameStatus(0, "Jazz")
+	s.UpdateListeningStatus("Jazz")
 	return s, nil
 }
 
