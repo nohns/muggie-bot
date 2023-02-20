@@ -6,6 +6,7 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/nohns/muggie-bot"
 	"github.com/nohns/muggie-bot/discord"
@@ -63,6 +64,7 @@ func (b *bot) respondWithMuggie(msg muggie.Message) error {
 		return nil
 	}
 
+	time.Sleep(2 * time.Second)
 	b.msgReplier.ReplyTo(msg, "du ve' bar")
 	return nil
 }
@@ -77,3 +79,5 @@ func containsMuggieMatch(s string) bool {
 
 	return false
 }
+
+// Print out hello world
