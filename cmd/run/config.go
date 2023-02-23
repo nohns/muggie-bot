@@ -9,6 +9,7 @@ import (
 type config struct {
 	token   string
 	permInt int
+	appID   string
 }
 
 // Read configuration of bot from environment variables
@@ -23,9 +24,15 @@ func readConfFromEnv() (*config, error) {
 		return nil, err
 	}
 
+	appID, err := stringEnvVar("DISCORD_BOT_APP_ID")
+	if err != nil {
+		return nil, err
+	}
+
 	return &config{
 		token:   token,
 		permInt: permInt,
+		appID:   appID,
 	}, nil
 }
 

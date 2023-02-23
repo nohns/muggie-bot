@@ -14,10 +14,9 @@ func NewDiscordSession(token string) (*discordgo.Session, error) {
 	if err != nil {
 		return nil, fmt.Errorf("could not create discord session: %v", err)
 	}
-	s.Identify.Intents = discordgo.MakeIntent(discordgo.IntentsAllWithoutPrivileged)
 
 	// Open a websocket connection to Discord and begin listening.
-	s.Identify.Intents = discordgo.IntentsGuildMessages
+	s.Identify.Intents = discordgo.IntentsGuildMessages | discordgo.IntentGuildVoiceStates
 	err = s.Open()
 	if err != nil {
 		return nil, fmt.Errorf("error opening discord connection: %v", err)
@@ -40,6 +39,10 @@ func NewDiscordProvider(s *discordgo.Session) *discordProvider {
 // Register handler when message comes in on any channel
 func (dp *discordProvider) OnMsg(h muggie.MsgHandlerFunc) error {
 	dp.s.AddHandler(func(s *discordgo.Session, m *discordgo.MessageCreate) {
+		if m.Author.Bot {
+			return
+		}
+
 		if err := h(&message{MessageCreate: m}); err != nil {
 			log.Printf("error occured while handling discord message: %v", err)
 		}
